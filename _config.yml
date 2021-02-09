@@ -14,7 +14,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: HatsuMora
-email: info@hatsumora.com
+email: aldo.rinconmora@hotmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   Hola, soy Aldo, este es un pequeño espacio en línea para escribir algunos
   pensamientos, a veces escribo en español, a veces escribiré en inglés.
@@ -22,7 +22,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   Juego Ultimate Frisbee y soy programador de tiempo completo, juego videojuegos
   y leo libros, al final soy alguien más del común con una historia que contar.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://hatsumora.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: HatsuMora
 github_username:  HatsuMora
 
