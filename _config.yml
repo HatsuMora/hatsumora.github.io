@@ -22,7 +22,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   Juego Ultimate Frisbee y soy programador de tiempo completo, juego videojuegos
   y leo libros, al final soy alguien más del común con una historia que contar.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://hatsumora.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://hatsumora.com" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: HatsuMora
 github_username:  HatsuMora
 
