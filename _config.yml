@@ -23,6 +23,7 @@ twitter_username: HatsuMora
 github_username:  HatsuMora
 
 # Build settings
+google_analytics: G-6YHLC3W1M6
 markdown: kramdown
 theme: minima
 plugins:
