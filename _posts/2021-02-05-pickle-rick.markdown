@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Pickle Rick"
+title:  "[THM] Pickle Rick"
 date:   2021-02-05 11:47:08 +0200
 categories: THM
 ---
@@ -56,7 +56,14 @@ It is worth notice that there is also a file called hint.txt, and it says that w
 
 Third Ingredient
 ================
-reverse shell -> sudo escalation with bash -p 
+After roaming around on the file structure you will not find the third flag, then let's see what commands we can run as root, for this use the command ```sudo -l```, we will find that we can run any command as sudo, now let's inspect the root directory ```sudo ls -al /root``` and we will find a file called 3rd.txt. we can retreive the contents with ```sudo strings /root/3rd.txt```
 
+![sudo -l](/assets/images/posts/pickle-rick/sudo.jpg)
 
-Now, Open SSH 7.2p2 is vulnerable to [Username Enumeration](https://www.exploit-db.com/exploits/40136){:target="_blank" rel="noopener"}([CVE-2016-6210](https://nvd.nist.gov/vuln/detail/CVE-2016-6210){:target="_blank" rel="noopener"}) 
+And that's it, see you on the next room.
+
+Answers:
+--------
+1. What is the first ingredient Rick needs? mr. meeseek hair
+2. Whats the second ingredient Rick needs? 1 jerry tear
+3. Whats the final ingredient Rick needs? fleeb juice
